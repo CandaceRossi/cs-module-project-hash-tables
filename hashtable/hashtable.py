@@ -107,7 +107,7 @@ class HashTable:
         Implement this.
         """
         # Your code here
-        len(MIN_CAPACITY)
+        # len(MIN_CAPACITY)
         #  hash_table = [None] * 8
     def get_load_factor(self):
         """
@@ -116,7 +116,7 @@ class HashTable:
         Implement this.
         """
         # Your code here
-       return __ % capacity
+    #    return __ % capacity
 
     def fnv1(self, key):
         """
@@ -130,7 +130,7 @@ class HashTable:
     PNV_prime = 240 + 28 + 0xb3 = 1099511628211 
     offset_basis = 0
     offset_str = key 
-    hash_mod = 2^hash_bits;
+    hash_mod = 2^hash_bits
     str_len = len(offset_str)
     for i=1; 1< str_len; ++i 
         offset_basis = (offset_basis * FNV_prime) % hash_mod
@@ -163,7 +163,10 @@ class HashTable:
         between within the storage capacity of the hash table.
         """
         #return self.fnv1(key) % self.capacity
-        return self.djb2(key) % self.capacity
+        # return self.djb2(key) % self.capacity
+        index = HashTable(key, len(hash_table))
+        hash_table[index] = key
+
 
     def put(self, key, value):
         """
@@ -174,14 +177,19 @@ class HashTable:
         Implement this.
         """
         # Your code here
-        # string_utf = key.encode()
-        # total = 0
-        # for char in string_utf: 
-        #     total += char 
-        #     total &= 0xffffffff
+    curr_node = self.hash_table.head
+    if curr_node is not None:
+        while curr_node.next is not None:
+            for k in curr_node.value:
+                if k == key:
+                    node = curr_node
+                    break
+            curr_node = curr_ode.next
 
-        index = HashTable(key, len(self.capacity))
-
+        if node == None:
+            hash_table.append({key: value})
+        else:
+            node.value[key] = value
 
     def delete(self, key):
         """
@@ -192,7 +200,19 @@ class HashTable:
         Implement this.
         """
         # Your code here
+    curr_node = self.hash_table.head
+    if curr_node is not None:
+        while curr_node.next is not None:
+            for k in curr_node.value:
+                if k == key:
+                    node = curr_tNode
+                    break
+            curr_node = curr_node.next
 
+        if not node == None:
+            return hash_table.remove_head(curr_node.value)
+
+        return None
 
     def get(self, key):
         """
