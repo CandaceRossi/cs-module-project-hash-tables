@@ -1,3 +1,73 @@
+
+class ListNode:
+    def __init__(self, value, prev=None, next=None):
+        self.value = value
+        self.prev = prev
+        self.next = next
+
+class LinkedList:
+    def __init__(self):
+        self.head = None  
+        self.tail = None 
+
+    def __str__(self): 
+        output = ''
+        current_node = self.head  
+        while current_node is not None: 
+            output += f'{current_node.value} ->'
+            current_node = current_node.next_node
+        return output
+
+    def add_to_head(self, value):
+        new_node = Node(value)
+        if self.head is None and self.tail is None:
+            self.head = new_node
+            self.tail = new_node
+        else:
+            new_node.next_node = self.head
+            self.head = new_node
+
+    def add_to_tail(self, value):
+        new_node = Node(value)
+        if self.head is None and self.tail is None:
+            self.head = new_node
+            self.tail = new_node
+        else:
+            self.tail.next_node = new_node
+            self.tail = new_node
+
+    def remove_head(self):
+        if not self.head:
+            return None
+        if self.head.next_node is None:
+            head_value = self.head.value
+            self.head = None
+            self.tail = None
+            return head_value
+        head_value = self.head.value
+        self.head = self.head.next_node
+        return head_value
+
+    def contains(self, value):
+        if self.head is None:
+            return False
+
+        current_node = self.head
+
+        while current_node is not None:
+            if current_node.value == value:
+                return True
+            current_node = current_node.next_node
+        return False
+
+    def isEmpty(self, value):
+        return True if self.head.value is None else False
+
+    def get_max(self, value):
+        if (self.isEmpty(self.head.value)):
+            return str(-maxsize - 1)
+
+
 class HashTableEntry:
     """
     Linked List hash table key/value pair
@@ -6,6 +76,7 @@ class HashTableEntry:
         self.key = key
         self.value = value
         self.next = None
+        self.hash_table = LinkedList()
 
 
 # Hash table can't have fewer than this many slots
@@ -21,7 +92,8 @@ class HashTable:
     """
 
     def __init__(self, capacity):
-        # Your code here
+        # Your code 
+        self.capacity = " "
 
 
     def get_num_slots(self):
@@ -35,8 +107,8 @@ class HashTable:
         Implement this.
         """
         # Your code here
-
-
+        len(MIN_CAPACITY)
+        #  hash_table = [None] * 8
     def get_load_factor(self):
         """
         Return the load factor for this hash table.
@@ -44,7 +116,7 @@ class HashTable:
         Implement this.
         """
         # Your code here
-
+       return __ % capacity
 
     def fnv1(self, key):
         """
@@ -54,6 +126,27 @@ class HashTable:
         """
 
         # Your code here
+    hash_bits = 64
+    PNV_prime = 240 + 28 + 0xb3 = 1099511628211 
+    offset_basis = 0
+    offset_str = key 
+    hash_mod = 2^hash_bits;
+    str_len = len(offset_str)
+    for i=1; 1< str_len; ++i 
+        offset_basis = (offset_basis * FNV_prime) % hash_mod
+        offset_basis = xor(offset_basis, ord(substr(offset_str,i,1)))
+    
+    print hash_bits, offset_basis
+      
+      
+    #   hash = offset_basis
+    #         for each octet_of_data to be hashed
+    #         hash = hash * FNV_prime
+    #         hash = hash xor octet_of_data
+    #         return hash
+
+    #     64 bit FNV_prime = 240 + 28 + 0xb3 = 1099511628211    
+    #     64 bit offset_basis = 14695981039346656037
 
 
     def djb2(self, key):
@@ -63,7 +156,6 @@ class HashTable:
         Implement this, and/or FNV-1.
         """
         # Your code here
-
 
     def hash_index(self, key):
         """
@@ -82,6 +174,13 @@ class HashTable:
         Implement this.
         """
         # Your code here
+        # string_utf = key.encode()
+        # total = 0
+        # for char in string_utf: 
+        #     total += char 
+        #     total &= 0xffffffff
+
+        index = HashTable(key, len(self.capacity))
 
 
     def delete(self, key):
@@ -104,7 +203,15 @@ class HashTable:
         Implement this.
         """
         # Your code here
+        node_storage = []
+        curr_node = self.hash_table.head
 
+        if curr_node is not None: 
+            while curr_node.next is not None:
+                node_storage.append(curr_node.value)
+                curr_node = curr_node.next 
+            node_storage.append(curr_node.value)
+        return node_storage
 
     def resize(self, new_capacity):
         """
@@ -114,7 +221,7 @@ class HashTable:
         Implement this.
         """
         # Your code here
-
+        return value % new_capacity
 
 
 if __name__ == "__main__":
