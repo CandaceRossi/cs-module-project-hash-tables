@@ -1,73 +1,3 @@
-
-class ListNode:
-    def __init__(self, value, prev=None, next=None):
-        self.value = value
-        self.prev = prev
-        self.next = next
-
-class LinkedList:
-    def __init__(self):
-        self.head = None  
-        self.tail = None 
-
-    def __str__(self): 
-        output = ''
-        current_node = self.head  
-        while current_node is not None: 
-            output += f'{current_node.value} ->'
-            current_node = current_node.next_node
-        return output
-
-    def add_to_head(self, value):
-        new_node = Node(value)
-        if self.head is None and self.tail is None:
-            self.head = new_node
-            self.tail = new_node
-        else:
-            new_node.next_node = self.head
-            self.head = new_node
-
-    def add_to_tail(self, value):
-        new_node = Node(value)
-        if self.head is None and self.tail is None:
-            self.head = new_node
-            self.tail = new_node
-        else:
-            self.tail.next_node = new_node
-            self.tail = new_node
-
-    def remove_head(self):
-        if not self.head:
-            return None
-        if self.head.next_node is None:
-            head_value = self.head.value
-            self.head = None
-            self.tail = None
-            return head_value
-        head_value = self.head.value
-        self.head = self.head.next_node
-        return head_value
-
-    def contains(self, value):
-        if self.head is None:
-            return False
-
-        current_node = self.head
-
-        while current_node is not None:
-            if current_node.value == value:
-                return True
-            current_node = current_node.next_node
-        return False
-
-    def isEmpty(self, value):
-        return True if self.head.value is None else False
-
-    def get_max(self, value):
-        if (self.isEmpty(self.head.value)):
-            return str(-maxsize - 1)
-
-
 class HashTableEntry:
     """
     Linked List hash table key/value pair
@@ -76,12 +6,11 @@ class HashTableEntry:
         self.key = key
         self.value = value
         self.next = None
-        self.hash_table = LinkedList()
+
 
 
 # Hash table can't have fewer than this many slots
 MIN_CAPACITY = 8
-
 
 class HashTable:
     """
@@ -93,7 +22,8 @@ class HashTable:
 
     def __init__(self, capacity):
         # Your code 
-        self.capacity = " "
+        self.capacity = MIN_CAPACITY
+        self.hash_table = [None] * self.capacity
 
 
     def get_num_slots(self):
@@ -116,7 +46,7 @@ class HashTable:
         Implement this.
         """
         # Your code here
-    #    return __ % capacity
+    #    return count % hash_table
 
     def fnv1(self, key):
         """
@@ -126,28 +56,6 @@ class HashTable:
         """
 
         # Your code here
-    hash_bits = 64
-    PNV_prime = 240 + 28 + 0xb3 = 1099511628211 
-    offset_basis = 0
-    offset_str = key 
-    hash_mod = 2^hash_bits
-    str_len = len(offset_str)
-    for i=1; 1< str_len; ++i 
-        offset_basis = (offset_basis * FNV_prime) % hash_mod
-        offset_basis = xor(offset_basis, ord(substr(offset_str,i,1)))
-    
-    print hash_bits, offset_basis
-      
-      
-    #   hash = offset_basis
-    #         for each octet_of_data to be hashed
-    #         hash = hash * FNV_prime
-    #         hash = hash xor octet_of_data
-    #         return hash
-
-    #     64 bit FNV_prime = 240 + 28 + 0xb3 = 1099511628211    
-    #     64 bit offset_basis = 14695981039346656037
-
 
     def djb2(self, key):
         """
@@ -157,16 +65,30 @@ class HashTable:
         """
         # Your code here
 
+        hash = 5381
+        for x in key:
+            hash = ((hash << 5) + hash) + ord(x)
+        return hash & 0xFFFFFFFF
+    
+    # def my_hash(s):
+    #     string_utf = s.encode()
+
+    #     total = 0
+    #     for char in string_utf:
+    #         total += char
+    #         total &= 0xffffffff # limit total to 32 bits
+    #     return total
+
     def hash_index(self, key):
         """
         Take an arbitrary key and return a valid integer index
         between within the storage capacity of the hash table.
         """
         #return self.fnv1(key) % self.capacity
-        # return self.djb2(key) % self.capacity
-        index = HashTable(key, len(hash_table))
-        hash_table[index] = key
-
+        return self.djb2(key) % self.capacity
+    
+        # hash_num = my_hash(key)
+        # return hash_num % len(hash_table)
 
     def put(self, key, value):
         """
@@ -177,19 +99,20 @@ class HashTable:
         Implement this.
         """
         # Your code here
-    curr_node = self.hash_table.head
-    if curr_node is not None:
-        while curr_node.next is not None:
-            for k in curr_node.value:
-                if k == key:
-                    node = curr_node
-                    break
-            curr_node = curr_ode.next
+        i = self.hash_index(key)
+        self.hash_table[i] = value
 
-        if node == None:
-            hash_table.append({key: value})
-        else:
-            node.value[key] = value
+
+        # i = self.hash_index(key)
+        # if i is not None:
+        #     while i.next is not None:
+        #         self.hash_table[i] = value
+        #         break
+        # if i is None:
+        #     hash_table.append(value)
+        # else: 
+        #     i.next = value
+
 
     def delete(self, key):
         """
@@ -200,19 +123,17 @@ class HashTable:
         Implement this.
         """
         # Your code here
-    curr_node = self.hash_table.head
-    if curr_node is not None:
-        while curr_node.next is not None:
-            for k in curr_node.value:
-                if k == key:
-                    node = curr_tNode
-                    break
-            curr_node = curr_node.next
-
-        if not node == None:
-            return hash_table.remove_head(curr_node.value)
-
-        return None
+        i = self.hash_index(key)
+        self.hash_table[i] = None
+        
+        # i = self.hash_index(key)
+        # if i is not None:
+        #     while i.next is not None:
+        #         self.hash_table[i] = None
+        #             break
+        #     self.hash_table[i] = i.next
+        # if not node == None:
+        #     return None
 
     def get(self, key):
         """
@@ -223,15 +144,17 @@ class HashTable:
         Implement this.
         """
         # Your code here
-        node_storage = []
-        curr_node = self.hash_table.head
+        i = self.hash_index(key) 
+        return self.hash_table[i]
 
-        if curr_node is not None: 
-            while curr_node.next is not None:
-                node_storage.append(curr_node.value)
-                curr_node = curr_node.next 
-            node_storage.append(curr_node.value)
-        return node_storage
+        # hash_storage = []
+        # i = self.hash_index(key)
+        # if i is not None: 
+        #     while i.next is not None:
+        #         hash_storage.append(i.value)
+        #         i = i.next 
+        #         i.append(i.value)
+        # return hash_storage
 
     def resize(self, new_capacity):
         """
@@ -241,7 +164,7 @@ class HashTable:
         Implement this.
         """
         # Your code here
-        return value % new_capacity
+        # return value % new_capacity
 
 
 if __name__ == "__main__":
