@@ -37,8 +37,9 @@ class HashTable:
         Implement this.
         """
         # Your code here
-        # len(MIN_CAPACITY)
-        #  hash_table = [None] * 8
+        #count everytime we add an item
+        #remove when we delete
+        
     def get_load_factor(self):
         """
         Return the load factor for this hash table.
@@ -99,19 +100,27 @@ class HashTable:
         Implement this.
         """
         # Your code here
-        i = self.hash_index(key)
-        self.hash_table[i] = value
-
-
+        #basic hash function (not linked list version)
         # i = self.hash_index(key)
-        # if i is not None:
-        #     while i.next is not None:
-        #         self.hash_table[i] = value
-        #         break
-        # if i is None:
-        #     hash_table.append(value)
-        # else: 
-        #     i.next = value
+        # self.hash_table[i] = value
+
+        #Linked list version
+        #hash the key and get an index
+        i = self.hash_index(key)
+        #find the start of the linked list using the index
+        #if the key already exists in the link list
+            #replace value
+        #else
+            #add new hashtable entry to the head of link list
+
+        if i is not None:
+            while i.next is not None:
+                self.hash_table[i] = value
+                break
+        if i is None:
+            hash_table.append(value)
+        else: 
+            i.next = value
 
 
     def delete(self, key):
@@ -123,17 +132,17 @@ class HashTable:
         Implement this.
         """
         # Your code here
-        i = self.hash_index(key)
-        self.hash_table[i] = None
-        
         # i = self.hash_index(key)
-        # if i is not None:
-        #     while i.next is not None:
-        #         self.hash_table[i] = None
-        #             break
-        #     self.hash_table[i] = i.next
-        # if not node == None:
-        #     return None
+        # self.hash_table[i] = None
+        
+        i = self.hash_index(key)
+        if i is not None:
+            while i.next is not None:
+                self.hash_table[i] = None
+                    break
+            self.hash_table[i] = i.next
+        if not node == None:
+            return None
 
     def get(self, key):
         """
@@ -144,17 +153,17 @@ class HashTable:
         Implement this.
         """
         # Your code here
-        i = self.hash_index(key) 
-        return self.hash_table[i]
+        # i = self.hash_index(key) 
+        # return self.hash_table[i]
 
-        # hash_storage = []
-        # i = self.hash_index(key)
-        # if i is not None: 
-        #     while i.next is not None:
-        #         hash_storage.append(i.value)
-        #         i = i.next 
-        #         i.append(i.value)
-        # return hash_storage
+        hash_storage = []
+        i = self.hash_index(key)
+        if i is not None: 
+            while i.next is not None:
+                hash_storage.append(i.value)
+                i = i.next 
+                i.append(i.value)
+        return hash_storage
 
     def resize(self, new_capacity):
         """
@@ -164,8 +173,21 @@ class HashTable:
         Implement this.
         """
         # Your code here
-        # return value % new_capacity
+        # if load factor is too high, resize
+        #too high == industry standard is over 0.7
+        #check load factor after every instertion
+        # if load factor is too small, downsize under 0.2
 
+        #make a new array that is double the current size
+        #new array now needs to be populated with the data
+        #go through each linked list in array
+            #go through each item and rehash it
+            #insert the items into their new locations
+        #forget about old array or delete or something
+
+    def shrink ():
+        pass
+        #same as resize, but reduce array by half
 
 if __name__ == "__main__":
     ht = HashTable(8)
